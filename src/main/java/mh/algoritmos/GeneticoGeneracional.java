@@ -25,9 +25,9 @@ public class GeneticoGeneracional {
     public GeneticoGeneracional(int a, String b, int c) {
         SEED = a;
         rand = new Random(SEED);
-        cromGG = new Cromosoma[P3.NUMP];
-        convergencia = new Lista[P3.NUMP];
-        for (int i = 0; i < P3.NUMP; i++) {
+        cromGG = new Cromosoma[P4.NUMP];
+        convergencia = new Lista[P4.NUMP];
+        for (int i = 0; i < P4.NUMP; i++) {
             convergencia[i] = new Lista<Integer>();
         }
         nombre = b;
@@ -51,7 +51,7 @@ public class GeneticoGeneracional {
     }
 
     public void ejecutarGG() {
-        for (int i = 0; i < P3.NUMP; i++) {
+        for (int i = 0; i < P4.NUMP; i++) {
             double time = System.currentTimeMillis();
             cromGG[i] = GG(i);
             time = ((System.currentTimeMillis() - time) / 6000);
@@ -62,7 +62,7 @@ public class GeneticoGeneracional {
             System.out.println("coste=" + cromGG[i].coste);
             System.out.println("eval=" + cromGG[i].eval);
             if (i == 2 && SEED == 333) {
-                Grafica g = new Grafica(convergencia[i], nombre, color, P3.RATIOGG[id]);
+                Grafica g = new Grafica(convergencia[i], nombre, color, P4.RATIOGG[id]);
                 g.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                 g.setBounds(200, 350, 800, 400);
                 g.setTitle(nombre + " - P" + (i + 1) + " - S" + SEED);
@@ -72,13 +72,13 @@ public class GeneticoGeneracional {
     }
 
     public Cromosoma GG(int tamP) {
-        int[] P = P3.P[tamP];
+        int[] P = P4.P[tamP];
         int ciu = P[0];
-        maxeval = P3.MAXGG[id] * ciu;
+        maxeval = P4.MAXGG[id] * ciu;
         eval = 0;
         gen = 0;
-        Lista listaGen = P3.listaGen.get(tamP);
-        Matriz listaDist = P3.listaDist.get(tamP);
+        Lista listaGen = P4.listaGen.get(tamP);
+        Matriz listaDist = P4.listaDist.get(tamP);
         Cromosoma tmp;
 
         //INICIALIZACION
@@ -91,7 +91,7 @@ public class GeneticoGeneracional {
         Cromosoma elite = tmp;
         convergencia[tamP].add(elite.coste);
 
-        for (int i = 1; i < P3.POBLACION; i++) {
+        for (int i = 1; i < P4.POBLACION; i++) {
             tmp = Cromosoma.genRandom(listaGen, rand);
             tmp.coste = Cromosoma.funCoste(tmp, listaDist);
             eval++;
@@ -105,11 +105,11 @@ public class GeneticoGeneracional {
             //SELECCION Y RECOMBINACION
             Lista<Cromosoma> siguiente = new Lista<>();
             int descendientes = 0;
-            while (eval <= maxeval - 2 && descendientes <= P3.POBLACION - 2) {
-                Cromosoma padre1 = Cromosoma.torneo(P3.TORNEO, actual, listaDist, rand);
-                Cromosoma padre2 = Cromosoma.torneo(P3.TORNEO, actual, listaDist, rand);
+            while (eval <= maxeval - 2 && descendientes <= P4.POBLACION - 2) {
+                Cromosoma padre1 = Cromosoma.torneo(P4.TORNEO, actual, listaDist, rand);
+                Cromosoma padre2 = Cromosoma.torneo(P4.TORNEO, actual, listaDist, rand);
                 double cruce = rand.nextDouble();
-                if (cruce >= 1.0 - P3.CRUCE) {
+                if (cruce >= 1.0 - P4.CRUCE) {
                     Cromosoma[] hijos = new Cromosoma[2];
                     if (id == 0 || id == 1) {
                         Cromosoma.cruceOX(padre1, padre2, hijos, rand);
@@ -134,11 +134,11 @@ public class GeneticoGeneracional {
                 }
             }
             //MUTACION
-            if (descendientes == P3.POBLACION) {
+            if (descendientes == P4.POBLACION) {
                 int mutaciones = 0;
-                while (eval <= maxeval - 1 && mutaciones <= P3.POBLACION - 1) {
+                while (eval <= maxeval - 1 && mutaciones <= P4.POBLACION - 1) {
                     double mutaP = rand.nextDouble();
-                    if (mutaP >= 1.0 - P3.MUTACION) {
+                    if (mutaP >= 1.0 - P4.MUTACION) {
                         tmp = siguiente.get(mutaciones);
                         if (id == 0 || id == 2) {
                             Cromosoma.mutacionCM(tmp, rand);
@@ -152,13 +152,13 @@ public class GeneticoGeneracional {
                     mutaciones++;
                 }
                 //REEMPLAZAMIENTO
-                if (mutaciones == P3.POBLACION) {
+                if (mutaciones == P4.POBLACION) {
                     Cromosoma.sort(actual);
                     Cromosoma.sort(siguiente);
-                    for (int i = 0; i < P3.ELITISMO; i++) {
+                    for (int i = 0; i < P4.ELITISMO; i++) {
                         siguiente.remove(siguiente.size() - 1);
                     }
-                    for (int i = 0; i < P3.ELITISMO; i++) {
+                    for (int i = 0; i < P4.ELITISMO; i++) {
                         tmp = actual.get(i);
                         siguiente.add(tmp);
                     }
@@ -166,7 +166,7 @@ public class GeneticoGeneracional {
                     Cromosoma.sort(siguiente);
                     actual = siguiente;
                     gen++;
-                    if (gen % P3.RATIOGG[id] == 0) {
+                    if (gen % P4.RATIOGG[id] == 0) {
                         convergencia[tamP].add(actual.get(0).coste);
                     }
                     if (elite.coste > actual.get(0).coste) {

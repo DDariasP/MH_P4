@@ -8,7 +8,7 @@ import java.util.ArrayList;
  *
  * @author diego
  */
-public class P3 {
+public class P4 {
 
     public static final int MAXPAL = 14;
     public static final int NUMP = 3;

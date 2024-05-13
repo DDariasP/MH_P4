@@ -28,9 +28,9 @@ public class Memetico {
     public Memetico(int a, String b, int c, double d, int e) {
         SEED = a;
         rand = new Random(SEED);
-        cromMM = new Cromosoma[P3.NUMP];
-        convergencia = new Lista[P3.NUMP];
-        for (int i = 0; i < P3.NUMP; i++) {
+        cromMM = new Cromosoma[P4.NUMP];
+        convergencia = new Lista[P4.NUMP];
+        for (int i = 0; i < P4.NUMP; i++) {
             convergencia[i] = new Lista<Integer>();
         }
         optG = c;
@@ -56,7 +56,7 @@ public class Memetico {
     }
 
     public void ejecutarMM() {
-        for (int i = 0; i < P3.NUMP; i++) {
+        for (int i = 0; i < P4.NUMP; i++) {
             double time = System.currentTimeMillis();
             cromMM[i] = MM(i);
             time = ((System.currentTimeMillis() - time) / 6000);
@@ -69,7 +69,7 @@ public class Memetico {
             System.out.println("eval=" + cromMM[i].eval);
             System.out.println("evalBL=" + cromMM[i].evalBL);
             if (i == 2 && SEED == 333) {
-                Grafica g = new Grafica(convergencia[i], nombre, color, P3.RATIOMM[id]);
+                Grafica g = new Grafica(convergencia[i], nombre, color, P4.RATIOMM[id]);
                 g.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                 g.setBounds(200, 350, 800, 400);
                 g.setTitle(nombre + " - P" + (i + 1) + " - S" + SEED);
@@ -79,15 +79,15 @@ public class Memetico {
     }
 
     public Cromosoma MM(int tamP) {
-        int[] P = P3.P[tamP];
+        int[] P = P4.P[tamP];
         int ciu = P[0];
-        maxBL = P3.BL[id] * ciu;
+        maxBL = P4.BL[id] * ciu;
         evalBL = 0;
-        maxeval = P3.MAXMM[id] * ciu;
+        maxeval = P4.MAXMM[id] * ciu;
         eval = 0;
         gen = 0;
-        Lista listaGen = P3.listaGen.get(tamP);
-        Matriz listaDist = P3.listaDist.get(tamP);
+        Lista listaGen = P4.listaGen.get(tamP);
+        Matriz listaDist = P4.listaDist.get(tamP);
         Cromosoma tmp;
         cacheOpt = new Lista<>();
 
@@ -101,7 +101,7 @@ public class Memetico {
         Cromosoma elite = tmp;
         convergencia[tamP].add(elite.coste);
 
-        for (int i = 1; i < P3.POBLACION; i++) {
+        for (int i = 1; i < P4.POBLACION; i++) {
             tmp = Cromosoma.genRandom(listaGen, rand);
             tmp.coste = Cromosoma.funCoste(tmp, listaDist);
             eval++;
@@ -115,11 +115,11 @@ public class Memetico {
             //SELECCION Y RECOMBINACION
             Lista<Cromosoma> siguiente = new Lista<>();
             int descendientes = 0;
-            while (eval <= maxeval - 2 && descendientes <= P3.POBLACION - 2) {
-                Cromosoma padre1 = Cromosoma.torneo(P3.TORNEO, actual, listaDist, rand);
-                Cromosoma padre2 = Cromosoma.torneo(P3.TORNEO, actual, listaDist, rand);
+            while (eval <= maxeval - 2 && descendientes <= P4.POBLACION - 2) {
+                Cromosoma padre1 = Cromosoma.torneo(P4.TORNEO, actual, listaDist, rand);
+                Cromosoma padre2 = Cromosoma.torneo(P4.TORNEO, actual, listaDist, rand);
                 double cruce = rand.nextDouble();
-                if (cruce >= 1.0 - P3.CRUCE) {
+                if (cruce >= 1.0 - P4.CRUCE) {
                     Cromosoma[] hijos = new Cromosoma[2];
                     if (id == 0 || id == 1) {
                         Cromosoma.cruceOX(padre1, padre2, hijos, rand);
@@ -144,13 +144,13 @@ public class Memetico {
                 }
             }
             //REEMPLAZAMIENTO
-            if (descendientes == P3.POBLACION) {
+            if (descendientes == P4.POBLACION) {
                 Cromosoma.sort(actual);
                 Cromosoma.sort(siguiente);
-                for (int i = 0; i < P3.ELITISMO; i++) {
+                for (int i = 0; i < P4.ELITISMO; i++) {
                     siguiente.remove(siguiente.size() - 1);
                 }
-                for (int i = 0; i < P3.ELITISMO; i++) {
+                for (int i = 0; i < P4.ELITISMO; i++) {
                     tmp = actual.get(i);
                     siguiente.add(tmp);
                 }
@@ -163,7 +163,7 @@ public class Memetico {
                     Cromosoma.sort(actual);
                 }
                 //RESULTADO
-                if (gen % P3.RATIOMM[id] == 0) {
+                if (gen % P4.RATIOMM[id] == 0) {
                     convergencia[tamP].add(actual.get(0).coste);
                 }
                 if (elite.coste > actual.get(0).coste) {
@@ -178,27 +178,27 @@ public class Memetico {
     }
 
     public void optimizacionAM(Lista<Cromosoma> poblacion, Matriz listaDist) {
-        boolean[] disponibles = new boolean[P3.POBLACION];
-        for (int i = 0; i < P3.POBLACION; i++) {
+        boolean[] disponibles = new boolean[P4.POBLACION];
+        for (int i = 0; i < P4.POBLACION; i++) {
             disponibles[i] = true;
         }
-        for (int i = 0; i < P3.POBLACION; i++) {
+        for (int i = 0; i < P4.POBLACION; i++) {
             double opt = rand.nextDouble();
             if (opt >= 1 - optP) {
                 int pos = -1;
                 while (pos == -1 || !disponibles[pos]) {
-                    pos = rand.nextInt(P3.POBLACION);
+                    pos = rand.nextInt(P4.POBLACION);
                 }
                 disponibles[pos] = false;
                 Cromosoma tmp = poblacion.get(pos);
                 if (!cacheOpt.contains(tmp)) {
-                    if (cacheOpt.size() == P3.CACHE) {
+                    if (cacheOpt.size() == P4.CACHE) {
                         cacheOpt.remove(0);
                     }
                     cacheOpt.add(tmp);
                     tmp = optBL(tmp, listaDist);
                     poblacion.replace(pos, tmp);
-                    if (cacheOpt.size() == P3.CACHE) {
+                    if (cacheOpt.size() == P4.CACHE) {
                         cacheOpt.remove(0);
                     }
                     cacheOpt.add(tmp);

@@ -23,8 +23,8 @@ public class Cromosoma {
     }
 
     public static Cromosoma genRandom(Lista<Gen> listaGen, Random rand) {
-        int cam = listaGen.size() / P3.MAXPAL;
-        Tabla matriz = new Tabla(cam, P3.MAXPAL);
+        int cam = listaGen.size() / P4.MAXPAL;
+        Tabla matriz = new Tabla(cam, P4.MAXPAL);
 
         int[] palxcam = new int[cam];
         for (int i = 0; i < cam; i++) {
@@ -35,7 +35,7 @@ public class Cromosoma {
             Gen palet = listaGen.get(i);
             int x = rand.nextInt(cam);
             int y = 0;
-            while (palxcam[x] == P3.MAXPAL) {
+            while (palxcam[x] == P4.MAXPAL) {
                 x = (x + 1) % cam;
             }
             while (matriz.s[x][y] != Gen.NULO) {
@@ -49,7 +49,7 @@ public class Cromosoma {
     }
 
     public static Cromosoma genGreedy(Lista<Gen> listaGen, Matriz listaDist, Random rand) {
-        int cam = listaGen.size() / P3.MAXPAL;
+        int cam = listaGen.size() / P4.MAXPAL;
         Lista<Gen> listaC = new Lista<>(listaGen);
 
         int[] ultimopal = new int[cam];
@@ -57,9 +57,9 @@ public class Cromosoma {
             ultimopal[i] = 1;
         }
 
-        Tabla matriz = new Tabla(cam, P3.MAXPAL);
+        Tabla matriz = new Tabla(cam, P4.MAXPAL);
 
-        for (int i = 0; i < P3.MAXPAL; i++) {
+        for (int i = 0; i < P4.MAXPAL; i++) {
             for (int j = 0; j < cam; j++) {
                 int ciucam = ultimopal[j] - 1;
                 Lista<Gen> LRC = new Lista<>();
@@ -111,10 +111,10 @@ public class Cromosoma {
             x4 = rand.nextInt(cam);
         }
 
-        y1 = rand.nextInt(P3.MAXPAL);
-        y2 = rand.nextInt(P3.MAXPAL);
-        y3 = rand.nextInt(P3.MAXPAL);
-        y4 = rand.nextInt(P3.MAXPAL);
+        y1 = rand.nextInt(P4.MAXPAL);
+        y2 = rand.nextInt(P4.MAXPAL);
+        y3 = rand.nextInt(P4.MAXPAL);
+        y4 = rand.nextInt(P4.MAXPAL);
 
         Gen tmp;
         tmp = matriz.s[x1][y1];
@@ -176,8 +176,8 @@ public class Cromosoma {
             x1 = x2;
             x2 = tmp;
         }
-        y1 = rand.nextInt(P3.MAXPAL);
-        y2 = rand.nextInt(P3.MAXPAL);
+        y1 = rand.nextInt(P4.MAXPAL);
+        y2 = rand.nextInt(P4.MAXPAL);
 
         Lista<Gen> restoP0 = new Lista<>();
         Lista<Gen> restoP1 = new Lista<>();
@@ -186,7 +186,7 @@ public class Cromosoma {
 
         //DE CAM_0 A CAM_X1-1
         for (int i = 0; i < x1; i++) {
-            for (int j = 0; j < P3.MAXPAL; j++) {
+            for (int j = 0; j < P4.MAXPAL; j++) {
                 restoP0.add(P0.m.s[i][j]);
                 restoP1.add(P1.m.s[i][j]);
             }
@@ -197,13 +197,13 @@ public class Cromosoma {
             restoP1.add(P1.m.s[x1][j]);
         }
         //DE CAM_X1_Y1 A CAM_X1+1
-        for (int j = y1; j < P3.MAXPAL; j++) {
+        for (int j = y1; j < P4.MAXPAL; j++) {
             seccionP0.add(P0.m.s[x1][j]);
             seccionP1.add(P1.m.s[x1][j]);
         }
         //DE CAM_X1+1 A CAM_X2-1
         for (int i = x1 + 1; i < x2; i++) {
-            for (int j = 0; j < P3.MAXPAL; j++) {
+            for (int j = 0; j < P4.MAXPAL; j++) {
                 seccionP0.add(P0.m.s[i][j]);
                 seccionP1.add(P1.m.s[i][j]);
             }
@@ -214,13 +214,13 @@ public class Cromosoma {
             seccionP1.add(P1.m.s[x2][j]);
         }
         //DE CAM_X2_Y2+1 A CAM_X2+1
-        for (int j = y2 + 1; j < P3.MAXPAL; j++) {
+        for (int j = y2 + 1; j < P4.MAXPAL; j++) {
             restoP0.add(P0.m.s[x2][j]);
             restoP1.add(P1.m.s[x2][j]);
         }
         //DE CAM_X2+1 A CAM_Z
         for (int i = x2 + 1; i < cam; i++) {
-            for (int j = 0; j < P3.MAXPAL; j++) {
+            for (int j = 0; j < P4.MAXPAL; j++) {
                 restoP0.add(P0.m.s[i][j]);
                 restoP1.add(P1.m.s[i][j]);
             }
@@ -228,12 +228,12 @@ public class Cromosoma {
 
         Lista<Gen> friendP0 = Gen.friendSort(restoP0, P1);
         Lista<Gen> friendP1 = Gen.friendSort(restoP1, P0);
-        H[0] = new Cromosoma(new Tabla(cam, P3.MAXPAL));
-        H[1] = new Cromosoma(new Tabla(cam, P3.MAXPAL));
+        H[0] = new Cromosoma(new Tabla(cam, P4.MAXPAL));
+        H[1] = new Cromosoma(new Tabla(cam, P4.MAXPAL));
 
         //DE CAM_0 A CAM_X1-1
         for (int i = 0; i < x1; i++) {
-            for (int j = 0; j < P3.MAXPAL; j++) {
+            for (int j = 0; j < P4.MAXPAL; j++) {
                 H[0].m.s[i][j] = friendP0.get(0);
                 friendP0.remove(0);
                 H[1].m.s[i][j] = friendP1.get(0);
@@ -248,7 +248,7 @@ public class Cromosoma {
             friendP1.remove(0);
         }
         //DE CAM_X1_Y1 A CAM_X1+1
-        for (int j = y1; j < P3.MAXPAL; j++) {
+        for (int j = y1; j < P4.MAXPAL; j++) {
             H[0].m.s[x1][j] = seccionP0.get(0);
             seccionP0.remove(0);
             H[1].m.s[x1][j] = seccionP1.get(0);
@@ -257,7 +257,7 @@ public class Cromosoma {
         }
         //DE CAM_X1+1 A CAM_X2-1
         for (int i = x1 + 1; i < x2; i++) {
-            for (int j = 0; j < P3.MAXPAL; j++) {
+            for (int j = 0; j < P4.MAXPAL; j++) {
                 H[0].m.s[i][j] = seccionP0.get(0);
                 seccionP0.remove(0);
                 H[1].m.s[i][j] = seccionP1.get(0);
@@ -272,7 +272,7 @@ public class Cromosoma {
             seccionP1.remove(0);
         }
         //DE CAM_X2_Y2+1 A CAM_X2+1
-        for (int j = y2 + 1; j < P3.MAXPAL; j++) {
+        for (int j = y2 + 1; j < P4.MAXPAL; j++) {
             H[0].m.s[x2][j] = friendP0.get(0);
             friendP0.remove(0);
             H[1].m.s[x2][j] = friendP1.get(0);
@@ -280,7 +280,7 @@ public class Cromosoma {
         }
         //DE CAM_X2+1 A CAM_Z
         for (int i = x2 + 1; i < cam; i++) {
-            for (int j = 0; j < P3.MAXPAL; j++) {
+            for (int j = 0; j < P4.MAXPAL; j++) {
                 H[0].m.s[i][j] = friendP0.get(0);
                 friendP0.remove(0);
                 H[1].m.s[i][j] = friendP1.get(0);
@@ -295,7 +295,7 @@ public class Cromosoma {
         genesP[0] = new Lista<>();
         genesP[1] = new Lista<>();
         for (int i = 0; i < cam; i++) {
-            for (int j = 0; j < P3.MAXPAL; j++) {
+            for (int j = 0; j < P4.MAXPAL; j++) {
                 genesP[0].add(P0.m.s[i][j]);
                 genesP[1].add(P1.m.s[i][j]);
             }
@@ -328,10 +328,10 @@ public class Cromosoma {
             }
         }
 
-        H[0] = new Cromosoma(new Tabla(cam, P3.MAXPAL));
-        H[1] = new Cromosoma(new Tabla(cam, P3.MAXPAL));
+        H[0] = new Cromosoma(new Tabla(cam, P4.MAXPAL));
+        H[1] = new Cromosoma(new Tabla(cam, P4.MAXPAL));
         for (int i = 0; i < cam; i++) {
-            for (int j = 0; j < P3.MAXPAL; j++) {
+            for (int j = 0; j < P4.MAXPAL; j++) {
                 H[0].m.s[i][j] = genesH[0].get(0);
                 genesH[0].remove(0);
                 H[1].m.s[i][j] = genesH[1].get(0);
@@ -348,8 +348,8 @@ public class Cromosoma {
         while (x2 == x1) {
             x2 = rand.nextInt(cam);
         }
-        y1 = rand.nextInt(P3.MAXPAL);
-        y2 = rand.nextInt(P3.MAXPAL);
+        y1 = rand.nextInt(P4.MAXPAL);
+        y2 = rand.nextInt(P4.MAXPAL);
 
         Gen tmp;
         tmp = c.m.s[x1][y1];
@@ -370,15 +370,15 @@ public class Cromosoma {
             x1 = x2;
             x2 = tmp;
         }
-        y1 = rand.nextInt(P3.MAXPAL);
-        y2 = rand.nextInt(P3.MAXPAL);
+        y1 = rand.nextInt(P4.MAXPAL);
+        y2 = rand.nextInt(P4.MAXPAL);
 
         Lista<Gen> seccion = new Lista<>();
-        for (int j = y1; j < P3.MAXPAL; j++) {
+        for (int j = y1; j < P4.MAXPAL; j++) {
             seccion.add(c.m.s[x1][j]);
         }
         for (int i = x1 + 1; i < x2; i++) {
-            for (int j = 0; j < P3.MAXPAL; j++) {
+            for (int j = 0; j < P4.MAXPAL; j++) {
                 seccion.add(c.m.s[i][j]);
             }
         }
@@ -387,12 +387,12 @@ public class Cromosoma {
         }
 
         seccion = Gen.invert(seccion);
-        for (int j = y1; j < P3.MAXPAL; j++) {
+        for (int j = y1; j < P4.MAXPAL; j++) {
             c.m.s[x1][j] = seccion.get(0);
             seccion.remove(0);
         }
         for (int i = x1 + 1; i < x2; i++) {
-            for (int j = 0; j < P3.MAXPAL; j++) {
+            for (int j = 0; j < P4.MAXPAL; j++) {
                 c.m.s[i][j] = seccion.get(0);
                 seccion.remove(0);
             }
