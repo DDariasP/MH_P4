@@ -1,10 +1,9 @@
+/home/diego/NetBeansProjects/MH_P4/src/main/java/mh/tipos/Nodo.java
+/home/diego/NetBeansProjects/MH_P4/src/main/java/mh/algoritmos/Greedy.java
 /home/diego/NetBeansProjects/MH_P4/src/main/java/mh/P4.java
-/home/diego/NetBeansProjects/MH_P4/src/main/java/mh/tipos/Cromosoma.java
-/home/diego/NetBeansProjects/MH_P4/src/main/java/mh/tipos/Gen.java
+/home/diego/NetBeansProjects/MH_P4/src/main/java/mh/tipos/Hormiga.java
 /home/diego/NetBeansProjects/MH_P4/src/main/java/mh/Parser.java
-/home/diego/NetBeansProjects/MH_P4/src/main/java/mh/algoritmos/Memetico.java
-/home/diego/NetBeansProjects/MH_P4/src/main/java/mh/tipos/Tabla.java
-/home/diego/NetBeansProjects/MH_P4/src/main/java/mh/Grafica.java
+/home/diego/NetBeansProjects/MH_P4/src/main/java/mh/algoritmos/SistemaElitista.java
+/home/diego/NetBeansProjects/MH_P4/src/main/java/mh/algoritmos/SistemaHormigas.java
 /home/diego/NetBeansProjects/MH_P4/src/main/java/mh/tipos/Matriz.java
-/home/diego/NetBeansProjects/MH_P4/src/main/java/mh/algoritmos/GeneticoGeneracional.java
 /home/diego/NetBeansProjects/MH_P4/src/main/java/mh/tipos/Lista.java

@@ -1,7 +1,5 @@
 package mh.tipos;
 
-import java.util.Arrays;
-
 /**
  *
  * @author diego
@@ -11,66 +9,37 @@ public class Matriz {
     public final int filas, columnas;
     public int[][] s;
 
-    public Matriz(int a, int b, int c) {
+    public Matriz(int a, int b) {
         filas = a;
         columnas = b;
         s = new int[a][b];
+    }
+
+    public void construir(Lista<Nodo> listaCiu) {
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                s[i][j] = c;
+                Nodo ni = listaCiu.get(i);
+                Nodo nj = listaCiu.get(j);
+                double distX = Math.pow(ni.x - nj.x, 2);
+                double distY = Math.pow(ni.y - nj.y, 2);
+                s[i][j] = (int) Math.round(Math.sqrt(distX + distY));
             }
         }
     }
 
-    public Matriz(Matriz copia) {
-        filas = copia.filas;
-        columnas = copia.columnas;
-        s = new int[filas][columnas];
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                s[i][j] = copia.s[i][j];
-            }
+    public int costeCamino(Lista<Integer> solucion) {
+        int coste = 0;
+        int tam = solucion.size();
+        int inicial = solucion.get(0) - 1;
+        int siguiente = inicial;
+        for (int i = 0; i < tam - 1; i++) {
+            int actual = solucion.get(i) - 1;
+            siguiente = solucion.get(i + 1) - 1;
+            coste = coste + s[actual][siguiente];
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-
-        if (!(o instanceof Matriz)) {
-            return false;
-        }
-
-        Matriz obj = (Matriz) o;
-
-        boolean iguales = true;
-        if (filas != obj.filas || columnas != obj.columnas) {
-            iguales = false;
-        }
-        int i = 0;
-        while (i < filas && iguales) {
-            int j = 0;
-            while (j < columnas && iguales) {
-                if (s[i][j] != obj.s[i][j]) {
-                    iguales = false;
-                }
-                j++;
-            }
-            i++;
-        }
-
-        return iguales;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 37 * hash + this.filas;
-        hash = 37 * hash + this.columnas;
-        hash = 37 * hash + Arrays.deepHashCode(this.s);
-        return hash;
+        inicial = solucion.get(0) - 1;
+        coste = coste + s[siguiente][inicial];
+        return coste;
     }
 
     @Override
