@@ -23,6 +23,7 @@ public class Parser {
                 line = scanner.nextLine();
             }
             line = scanner.nextLine();
+            line = line.trim();
             while (!line.equals("EOF")) {
                 tokens = line.split("\\s+");
                 if (tokens.length == 3) {
@@ -32,6 +33,7 @@ public class Parser {
                     listaCiu.add(new Nodo(id, x, y));
                 }
                 line = scanner.nextLine();
+                line = line.trim();
             }
             scanner.close();
         } catch (IOException ex) {

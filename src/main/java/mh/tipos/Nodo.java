@@ -23,6 +23,27 @@ public class Nodo {
         coste = c;
     }
 
+    public Nodo(int a) {
+        id = a;
+        x = -1;
+        y = -1;
+        coste = Integer.MAX_VALUE;
+    }
+
+    public static boolean arco(Lista<Nodo> n, int r, int s) {
+        boolean encontrado = false;
+        if (n.size() > 0) {
+            Lista<Nodo> lista = new Lista<>(n);
+            lista.add(lista.head());
+            int posR = lista.position(new Nodo(r));
+            int posS = lista.position(new Nodo(s));
+            if (posR != -1 && posS != -1) {
+                encontrado = Math.abs(posR - posS) == 1;
+            }
+        }
+        return encontrado;
+    }
+
     public static void sort(Lista<Nodo> lista) {
         if (lista == null || lista.isEmpty()) {
             return;

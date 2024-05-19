@@ -69,45 +69,46 @@ public class Hormiga {
         cerrados.add(siguiente);
     }
 
-    public double[][] actualizacion(double[][] TAU, double iter) {
-        int camino = cerrados.size();
-        double aporte = 0.0;
-        for (int j = 0; j < camino + 1; j++) {
-            aporte = aporte + (1.0 / coste);
-        }
+    public static double[][] actualizacion(Hormiga[] m, double[][] TAU, double iter) {
+        for (int x = 0; x < P4.CIU; x++) {
+            for (int y = 0; y < P4.CIU; y++) {
 
-        for (int i = 0; i < camino - 1; i++) {
-            Nodo r = cerrados.get(i);
-            Nodo s = cerrados.get(i + 1);
-            double evapor = (1.0 - P4.RHO) * TAU[r.id][s.id] * (iter - 1.0);
-            TAU[r.id][s.id] = evapor + aporte;
+                double evapora = (1.0 - P4.RHO) * TAU[x][y] * (iter - 1.0);
+
+                double aporte = 0.0;
+                for (int i = 0; i < P4.NUMH; i++) {
+                    if (Nodo.arco(m[i].cerrados, x, y)) {
+                        aporte = aporte + (1.0 / m[i].coste);
+                    }
+                }
+
+                TAU[x][y] = evapora + aporte;
+            }
         }
-        Nodo ultimo = cerrados.tail();
-        Nodo primero = cerrados.head();
-        double evapor = (1.0 - P4.RHO) * TAU[ultimo.id][primero.id] * (iter - 1.0);
-        TAU[ultimo.id][primero.id] = evapor + aporte;
         return TAU;
     }
 
-    public double[][] actualizacionE(double[][] TAU, double iter, Hormiga elite) {
-        int camino = cerrados.size();
-        double aporte = 0.0;
-        for (int j = 0; j < camino + 1; j++) {
-            aporte = aporte + (1.0 / coste);
-        }
+    public static double[][] actualizacion(Hormiga[] m, double[][] TAU, double iter, Hormiga elite) {
+        for (int x = 0; x < P4.CIU; x++) {
+            for (int y = 0; y < P4.CIU; y++) {
 
-        double refuerzo = P4.ELITISMO * (1.0 / elite.coste);
+                double evapora = (1.0 - P4.RHO) * TAU[x][y] * (iter - 1.0);
 
-        for (int i = 0; i < camino - 1; i++) {
-            Nodo r = cerrados.get(i);
-            Nodo s = cerrados.get(i + 1);
-            double evapor = (1.0 - P4.RHO) * TAU[r.id][s.id] * (iter - 1.0);
-            TAU[r.id][s.id] = evapor + aporte + refuerzo;
+                double aporte = 0.0;
+                for (int i = 0; i < P4.NUMH; i++) {
+                    if (Nodo.arco(m[i].cerrados, x, y)) {
+                        aporte = aporte + (1.0 / m[i].coste);
+                    }
+                }
+
+                double refuerzo = 0.0;
+                if (Nodo.arco(elite.cerrados, x, y)) {
+                    refuerzo = P4.ELITISMO * (1.0 / elite.coste);
+                }
+
+                TAU[x][y] = evapora + aporte + refuerzo;
+            }
         }
-        Nodo ultimo = cerrados.tail();
-        Nodo primero = cerrados.head();
-        double evapor = (1.0 - P4.RHO) * TAU[ultimo.id][primero.id] * (iter - 1.0);
-        TAU[ultimo.id][primero.id] = evapor + aporte + refuerzo;
         return TAU;
     }
 

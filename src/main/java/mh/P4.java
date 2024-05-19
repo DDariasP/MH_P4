@@ -50,7 +50,7 @@ public class P4 {
             solOPT[t].eval = 1;
             System.out.println("Optima - " + filename[t]);
             System.out.println(solOPT[t].coste + "\t" + solOPT[t].eval);
-            System.out.println(solOPT[t]);
+            System.out.println(solOPT[t] + "\n");
 
             //SOLUCION GREEDY
             solG[t] = new Hormiga();
@@ -59,7 +59,7 @@ public class P4 {
             solG[t].eval = 1;
             System.out.println("Greedy - " + filename[t]);
             System.out.println(solG[t].coste + "\t" + solG[t].eval);
-            System.out.println(solG[t]);
+            System.out.println(solG[t] + "\n");
 
             //SH
             System.out.println("SH - " + filename[t]);
@@ -67,6 +67,7 @@ public class P4 {
                 solSH[t][i] = new SistemaHormigas(SEED[i], t);
                 System.out.println(solSH[t][i].elite.coste + "\t" + solSH[t][i].eval);
             }
+            System.out.println("");
 
             //SHE
             System.out.println("SHE - " + filename[t]);
@@ -74,6 +75,7 @@ public class P4 {
                 solSHE[t][i] = new SistemaElitista(SEED[i], t);
                 System.out.println(solSHE[t][i].elite.coste + "\t" + solSHE[t][i].eval);
             }
+            System.out.println("");
 
             System.out.println("\n---------------------\n");
         }

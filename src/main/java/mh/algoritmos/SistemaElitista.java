@@ -56,13 +56,13 @@ public class SistemaElitista {
                 m[i].coste = P4.distancias.costeCamino(m[i].cerrados);
                 eval++;
                 m[i].eval = eval;
-
-                //ACTUALIZAR FEROMONA
-                TAU = m[i].actualizacionE(TAU, iter, elite);
             }
 
             //MEJOR ACTUAL
             Hormiga actual = Hormiga.mejor(m);
+
+            //ACTUALIZAR FEROMONA
+            TAU = Hormiga.actualizacion(m, TAU, iter, elite);
 
             //MEJOR GLOBAL
             if (elite.coste > actual.coste) {

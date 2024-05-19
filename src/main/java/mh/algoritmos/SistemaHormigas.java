@@ -14,7 +14,7 @@ public class SistemaHormigas {
     public Random rand;
     public final double TAU0;
     public double[][] TAU;
-    public final Hormiga[] m;
+    public Hormiga[] m;
     public Hormiga elite;
     public int eval;
 
@@ -56,13 +56,13 @@ public class SistemaHormigas {
                 m[i].coste = P4.distancias.costeCamino(m[i].cerrados);
                 eval++;
                 m[i].eval = eval;
-
-                //ACTUALIZAR FEROMONA
-                TAU = m[i].actualizacion(TAU, iter);
             }
 
             //MEJOR ACTUAL
             Hormiga actual = Hormiga.mejor(m);
+
+            //ACTUALIZAR FEROMONA
+            TAU = Hormiga.actualizacion(m, TAU, iter);
 
             //MEJOR GLOBAL
             if (elite.coste > actual.coste) {
