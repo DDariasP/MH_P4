@@ -2,7 +2,6 @@ package mh;
 
 import mh.tipos.*;
 import mh.algoritmos.*;
-import java.util.ArrayList;
 
 /**
  *
@@ -12,10 +11,17 @@ public class P4 {
 
     public static final int[] SEED = {111, 222, 333, 123, 321};
     public static final int NUMH = 30;
-    public static final int ELITISMO = 15;
-    public static final int[] T = {3, 8};
+    public static final double ALPHA = 1.0;
+    public static final double BETA = 2.0;
+    public static final double RHO = 0.1;
+    public static final double ELITISMO = 15.0;
+    public static final int[] T = {1, 1};
+    public static final String[] filename = {"ch130", "a280"};
+    public static Hormiga[] solOPT, solG;
+    public static SistemaHormigas[][] solSH;
+    public static SistemaElitista[][] solSHE;
     public static Lista<Nodo> listaCiu;
-    public static int ciu;
+    public static int CIU;
     public static Matriz distancias;
 
     /**
@@ -23,14 +29,56 @@ public class P4 {
      */
     public static void main(String[] args) {
 
-        listaCiu = Parser.leerCiu("ch130.tsp");
-        ciu = listaCiu.size();
-        distancias = new Matriz(ciu, ciu);
-        distancias.construir(listaCiu);
+        //RESULTADOS
+        solOPT = new Hormiga[T.length];
+        solG = new Hormiga[T.length];
+        solSH = new SistemaHormigas[T.length][SEED.length];
+        solSHE = new SistemaElitista[T.length][SEED.length];
 
-        Lista<Integer> solopt = Parser.leerTour("ch130.opt.tour");
-        int opt = distancias.costeCamino(solopt);
-        
+        //PROBLEMAS
+        for (int t = 0; t < T.length; t++) {
+            //MATRIZ DISTANCIAS
+            listaCiu = Parser.leerCiu(filename[t] + ".tsp");
+            CIU = listaCiu.size();
+            distancias = new Matriz(CIU, CIU);
+            distancias.construir(listaCiu);
 
+            //SOLUCION OPTIMA
+            solOPT[t] = new Hormiga();
+            solOPT[t].cerrados = Parser.leerTour(filename[t] + ".opt.tour");
+            solOPT[t].coste = distancias.costeCamino(solOPT[t].cerrados);
+            solOPT[t].eval = 1;
+            System.out.println("Optima - " + filename[t]);
+            System.out.println(solOPT[t].coste + "\t" + solOPT[t].eval);
+            System.out.println(solOPT[t]);
+
+            //SOLUCION GREEDY
+            solG[t] = new Hormiga();
+            solG[t].cerrados = Greedy.solG();
+            solG[t].coste = distancias.costeCamino(solG[t].cerrados);
+            solG[t].eval = 1;
+            System.out.println("Greedy - " + filename[t]);
+            System.out.println(solG[t].coste + "\t" + solG[t].eval);
+            System.out.println(solG[t]);
+
+            //SH
+            System.out.println("SH - " + filename[t]);
+            for (int i = 0; i < SEED.length; i++) {
+                solSH[t][i] = new SistemaHormigas(SEED[i], t);
+                System.out.println(solSH[t][i].elite.coste + "\t" + solSH[t][i].eval);
+            }
+
+            //SHE
+            System.out.println("SHE - " + filename[t]);
+            for (int i = 0; i < SEED.length; i++) {
+                solSHE[t][i] = new SistemaElitista(SEED[i], t);
+                System.out.println(solSHE[t][i].elite.coste + "\t" + solSHE[t][i].eval);
+            }
+
+            System.out.println("\n---------------------\n");
+        }
+
+        //GUARDAR
+        Parser.escribir("RESULTADOS.txt");
     }
 }

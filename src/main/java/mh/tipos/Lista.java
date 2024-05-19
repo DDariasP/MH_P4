@@ -40,6 +40,14 @@ public class Lista<T> {
         return lista.get(index);
     }
 
+    public T head() {
+        return lista.get(0);
+    }
+
+    public T tail() {
+        return lista.get(lista.size() - 1);
+    }
+
     public void replace(int i, T obj) {
         lista.set(i, obj);
     }

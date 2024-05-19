@@ -27,18 +27,18 @@ public class Matriz {
         }
     }
 
-    public int costeCamino(Lista<Integer> solucion) {
+    public int costeCamino(Lista<Nodo> solucion) {
         int coste = 0;
         int tam = solucion.size();
-        int inicial = solucion.get(0) - 1;
-        int siguiente = inicial;
+        Nodo inicial = solucion.get(0);
+        Nodo siguiente = inicial;
         for (int i = 0; i < tam - 1; i++) {
-            int actual = solucion.get(i) - 1;
-            siguiente = solucion.get(i + 1) - 1;
-            coste = coste + s[actual][siguiente];
+            Nodo actual = solucion.get(i);
+            siguiente = solucion.get(i + 1);
+            coste = coste + s[actual.id][siguiente.id];
         }
-        inicial = solucion.get(0) - 1;
-        coste = coste + s[siguiente][inicial];
+        inicial = solucion.get(0);
+        coste = coste + s[siguiente.id][inicial.id];
         return coste;
     }
 
