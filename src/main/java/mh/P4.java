@@ -48,7 +48,7 @@ public class P4 {
             solOPT[t].cerrados = Parser.leerTour(filename[t] + ".opt.tour");
             solOPT[t].coste = distancias.costeCamino(solOPT[t].cerrados);
             solOPT[t].eval = 1;
-            System.out.println("Optima - " + filename[t]);
+            System.out.println("Optima - " + filename[t] + ".opt.tour");
             System.out.println(solOPT[t].coste + "\t" + solOPT[t].eval);
             System.out.println(solOPT[t] + "\n");
 
@@ -57,12 +57,12 @@ public class P4 {
             solG[t].cerrados = Greedy.solG();
             solG[t].coste = distancias.costeCamino(solG[t].cerrados);
             solG[t].eval = 1;
-            System.out.println("Greedy - " + filename[t]);
+            System.out.println("Greedy - " + filename[t] + ".tsp");
             System.out.println(solG[t].coste + "\t" + solG[t].eval);
             System.out.println(solG[t] + "\n");
 
             //SH
-            System.out.println("SH - " + filename[t]);
+            System.out.println("SH - " + filename[t] + ".tsp - " + T[t] + " min");
             for (int i = 0; i < SEED.length; i++) {
                 solSH[t][i] = new SistemaHormigas(SEED[i], t);
                 System.out.println(solSH[t][i].elite.coste + "\t" + solSH[t][i].eval);
@@ -70,7 +70,7 @@ public class P4 {
             System.out.println("");
 
             //SHE
-            System.out.println("SHE - " + filename[t]);
+            System.out.println("SHE - " + filename[t] + ".tsp - " + T[t] + " min");
             for (int i = 0; i < SEED.length; i++) {
                 solSHE[t][i] = new SistemaElitista(SEED[i], t);
                 System.out.println(solSHE[t][i].elite.coste + "\t" + solSHE[t][i].eval);
