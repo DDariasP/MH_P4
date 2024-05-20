@@ -37,7 +37,7 @@ public class Grafo extends JFrame {
             //caracteristicas de parte-i
             XYItemRenderer rendereri = new XYLineAndShapeRenderer(true, true);
             rendereri.setSeriesShape(0, new Ellipse2D.Double(-3.0, 0.0, 3.0, 3.0));
-            rendereri.setSeriesPaint(0, Color.GREEN);
+            rendereri.setSeriesPaint(0, Color.CYAN);
             rendereri.setSeriesStroke(0, new BasicStroke(2.0f));
             //añadir parte-i a la grafica
             plot.setDataset(i, setDisti);

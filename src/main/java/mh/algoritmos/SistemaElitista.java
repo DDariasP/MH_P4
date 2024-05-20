@@ -13,8 +13,8 @@ public class SistemaElitista {
     public final int SEED;
     public Random rand;
     public final double TAU0;
-    public double[][] TAU;
-    public final Hormiga[] m;
+    public Tabla TAU;
+    public Hormiga[] m;
     public Hormiga elite;
     public int eval;
 
@@ -22,12 +22,7 @@ public class SistemaElitista {
         SEED = s;
         rand = new Random(SEED);
         TAU0 = 1.0 / (P4.CIU * P4.solG[t].coste);
-        TAU = new double[P4.CIU][P4.CIU];
-        for (int i = 0; i < P4.CIU; i++) {
-            for (int j = 0; j < P4.CIU; j++) {
-                TAU[i][j] = TAU0;
-            }
-        }
+        TAU = new Tabla(P4.CIU, P4.CIU, TAU0);
         m = new Hormiga[P4.NUMH];
         SHE(t);
     }
@@ -67,6 +62,12 @@ public class SistemaElitista {
             //MEJOR GLOBAL
             if (elite.coste > actual.coste) {
                 elite = actual;
+            }
+
+            if (iter % 100 == 0) {
+                System.out.println(actual.coste + "\titer=" + iter);
+                System.out.println(actual);
+
             }
 
             //TIEMPO LIMITE

@@ -13,7 +13,7 @@ public class SistemaHormigas {
     public final int SEED;
     public Random rand;
     public final double TAU0;
-    public double[][] TAU;
+    public Tabla TAU;
     public Hormiga[] m;
     public Hormiga elite;
     public int eval;
@@ -22,12 +22,7 @@ public class SistemaHormigas {
         SEED = s;
         rand = new Random(SEED);
         TAU0 = 1.0 / (P4.CIU * P4.solG[t].coste);
-        TAU = new double[P4.CIU][P4.CIU];
-        for (int i = 0; i < P4.CIU; i++) {
-            for (int j = 0; j < P4.CIU; j++) {
-                TAU[i][j] = TAU0;
-            }
-        }
+        TAU = new Tabla(P4.CIU, P4.CIU, TAU0);
         m = new Hormiga[P4.NUMH];
         SH(t);
     }
@@ -49,26 +44,36 @@ public class SistemaHormigas {
             }
 
             //CONSTRUIR SOLUCIONES
+//            System.out.println("iter="+iter);
             for (int i = 0; i < P4.NUMH; i++) {
                 for (int j = 1; j < P4.CIU; j++) {
                     m[i].transicion(TAU, rand);
                 }
+//                System.out.println("h"+m[i].id);
                 m[i].coste = P4.distancias.costeCamino(m[i].cerrados);
                 eval++;
                 m[i].eval = eval;
             }
+//            System.out.println("");
 
             //MEJOR ACTUAL
             Hormiga actual = Hormiga.mejor(m);
 
             //ACTUALIZAR FEROMONA
             TAU = Hormiga.actualizacion(m, TAU, iter);
+//            System.out.println(TAU);
+//            System.out.println("\n");
 
             //MEJOR GLOBAL
             if (elite.coste > actual.coste) {
                 elite = actual;
             }
 
+            if (iter % 100 == 0) {
+                System.out.println(actual.coste + "\titer=" + iter);
+                System.out.println(actual);
+
+            }
             //TIEMPO LIMITE
             iter++;
             if (iter >= P4.MAXITER[t]) {

@@ -18,11 +18,15 @@ public class Matriz {
     public void construir(Lista<Nodo> listaCiu) {
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                Nodo ni = listaCiu.get(i);
-                Nodo nj = listaCiu.get(j);
-                double distX = Math.pow(ni.x - nj.x, 2);
-                double distY = Math.pow(ni.y - nj.y, 2);
-                s[i][j] = (int) Math.round(Math.sqrt(distX + distY));
+                if (i == j) {
+                    s[i][j] = Integer.MAX_VALUE;
+                } else {
+                    Nodo ni = listaCiu.get(i);
+                    Nodo nj = listaCiu.get(j);
+                    double distX = Math.pow(ni.x - nj.x, 2);
+                    double distY = Math.pow(ni.y - nj.y, 2);
+                    s[i][j] = (int) Math.round(Math.sqrt(distX + distY));
+                }
             }
         }
     }

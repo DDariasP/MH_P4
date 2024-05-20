@@ -102,7 +102,7 @@ public class Nodo {
 
     @Override
     public String toString() {
-        String output = (id + 1) + "(" + Math.round(x) + "," + Math.round(y) + ")";
+        String output = (id + 1) + "(" + (int) Math.rint(x) + "," + (int) Math.rint(y) + ")";
         return output;
     }
 

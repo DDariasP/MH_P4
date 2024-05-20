@@ -33,80 +33,83 @@ public class Hormiga {
         eval = 0;
     }
 
-    public void transicion(double[][] TAU, Random rand) {
+    public void transicion(Tabla TAU, Random rand) {
         Nodo actual = cerrados.tail();
         int posibles = abiertos.size();
+        double[] num = new double[posibles];
         double sum = 0.0;
-        double[] ruleta = new double[posibles];
+
         for (int i = 0; i < posibles; i++) {
             int pos = abiertos.get(i).id;
-            double a = Math.pow(TAU[actual.id][pos], P4.ALPHA);
-            double ETA = 1.0 / TAU[actual.id][pos];
-            double b = Math.pow(ETA, P4.BETA);
-            double num = a * b;
-            ruleta[i] = num;
-            sum = sum + num;
-        }
-        ruleta[0] = ruleta[0] / (sum - ruleta[0]);
-        for (int i = 1; i < posibles; i++) {
-            double num = ruleta[i];
-            double den = sum - num;
-            double P = num / den;
-            ruleta[i] = ruleta[i - 1] + P;
+            double a = Math.pow(TAU.s[actual.id][pos], P4.ALPHA);
+            double b = Math.pow(P4.ETA.s[actual.id][pos], P4.BETA);
+            num[i] = a * b;
+            sum = sum + num[i];
         }
 
-        double r = rand.nextDouble();
-        int iter = 0;
+        double[] roulette = new double[posibles];
+        for (int i = 0; i < posibles; i++) {
+            roulette[i] = num[i] / sum;
+        }
+
+        double random = rand.nextDouble();
+        double acum = 0.0;
         boolean encontrado = false;
-        while (!encontrado && iter < posibles) {
-            if (r < ruleta[iter]) {
+        int pos = 0;
+        while (!encontrado && pos < posibles) {
+            acum = acum + roulette[pos];
+            if (random <= acum) {
                 encontrado = true;
             }
-            iter++;
+            pos++;
         }
-        Nodo siguiente = abiertos.get(iter - 1);
+        pos--;
+
+        Nodo siguiente = abiertos.get(pos);
         abiertos.remove(siguiente);
         cerrados.add(siguiente);
     }
 
-    public static double[][] actualizacion(Hormiga[] m, double[][] TAU, double iter) {
+    public static Tabla actualizacion(Hormiga[] m, Tabla TAU, double iter) {
         for (int x = 0; x < P4.CIU; x++) {
             for (int y = 0; y < P4.CIU; y++) {
+                if (x != y) {
+                    double evapora = (1.0 - P4.RHO) * TAU.s[x][y];
 
-                double evapora = (1.0 - P4.RHO) * TAU[x][y] * (iter - 1.0);
-
-                double aporte = 0.0;
-                for (int i = 0; i < P4.NUMH; i++) {
-                    if (Nodo.arco(m[i].cerrados, x, y)) {
-                        aporte = aporte + (1.0 / m[i].coste);
+                    double aporte = 0.0;
+                    for (int i = 0; i < P4.NUMH; i++) {
+                        if (Nodo.arco(m[i].cerrados, x, y)) {
+                            aporte = aporte + (1.0 / m[i].coste);
+                        }
                     }
-                }
 
-                TAU[x][y] = evapora + aporte;
+                    TAU.s[x][y] = evapora + aporte;
+                }
             }
         }
         return TAU;
     }
 
-    public static double[][] actualizacion(Hormiga[] m, double[][] TAU, double iter, Hormiga elite) {
+    public static Tabla actualizacion(Hormiga[] m, Tabla TAU, double iter, Hormiga elite) {
         for (int x = 0; x < P4.CIU; x++) {
             for (int y = 0; y < P4.CIU; y++) {
+                if (x != y) {
+                    double evapora = (1.0 - P4.RHO) * TAU.s[x][y];
 
-                double evapora = (1.0 - P4.RHO) * TAU[x][y] * (iter - 1.0);
-
-                double aporte = 0.0;
-                for (int i = 0; i < P4.NUMH; i++) {
-                    if (Nodo.arco(m[i].cerrados, x, y)) {
-                        aporte = aporte + (1.0 / m[i].coste);
+                    double aporte = 0.0;
+                    for (int i = 0; i < P4.NUMH; i++) {
+                        if (Nodo.arco(m[i].cerrados, x, y)) {
+                            aporte = aporte + (1.0 / m[i].coste);
+                        }
                     }
-                }
 
-                double refuerzo = 0.0;
-                if (Nodo.arco(elite.cerrados, x, y)) {
-                    refuerzo = P4.ELITISMO * (1.0 / elite.coste);
-                }
+                    double refuerzo = 0.0;
+                    if (Nodo.arco(elite.cerrados, x, y)) {
+                        refuerzo = P4.ELITISMO * (1.0 / elite.coste);
+                    }
 
-                TAU[x][y] = evapora + aporte + refuerzo;
+                    TAU.s[x][y] = evapora + aporte + refuerzo;
+                }
             }
         }
         return TAU;

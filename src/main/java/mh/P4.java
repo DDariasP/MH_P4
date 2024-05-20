@@ -17,15 +17,16 @@ public class P4 {
     public static final double RHO = 0.1;
     public static final double ELITISMO = 15.0;
     public static final int[] T = {1, 1};
-    public static final int[] MAXITER = {5, 5};
-    public static final String[] filename = {"lin105", "kroA100"};
-//    public static final String[] filename = {"ch130", "a280"};
+    public static final int[] MAXITER = {5000, 5000};
+//    public static final String[] filename = {"lin105", "kroA100"};
+    public static final String[] filename = {"ch130", "a280"};
     public static Hormiga[] solOPT, solG;
     public static SistemaHormigas[][] solSH;
     public static SistemaElitista[][] solSHE;
     public static Lista<Nodo> listaCiu;
     public static int CIU;
     public static Matriz distancias;
+    public static Tabla ETA;
 
     /**
      * @param args the command line arguments
@@ -45,6 +46,8 @@ public class P4 {
             CIU = listaCiu.size();
             distancias = new Matriz(CIU, CIU);
             distancias.construir(listaCiu);
+            ETA = new Tabla(CIU, CIU);
+            ETA.construir(distancias);
 
             //SOLUCION OPTIMA
             solOPT[t] = new Hormiga();
@@ -80,7 +83,8 @@ public class P4 {
 
             int i = 2;
             //SH
-            System.out.println("SH - " + filename[t] + ".tsp - " + T[t] + " min");
+            System.out.println("SH - " + filename[t] + ".tsp - " + MAXITER[t] + " iter");
+//            System.out.println("SH - " + filename[t] + ".tsp - " + T[t] + " min");
 //            for (int i = 0; i < SEED.length; i++) {
             solSH[t][i] = new SistemaHormigas(SEED[i], t);
             System.out.println(solSH[t][i].elite.coste + "\t" + solSH[t][i].eval);
@@ -96,7 +100,8 @@ public class P4 {
             System.out.println("");
 
             //SHE
-            System.out.println("SHE - " + filename[t] + ".tsp - " + T[t] + " min");
+            System.out.println("SHE - " + filename[t] + ".tsp - " + MAXITER[t] + " iter");
+//            System.out.println("SHE - " + filename[t] + ".tsp - " + T[t] + " min");
 //            for (int i = 0; i < SEED.length; i++) {
             solSHE[t][i] = new SistemaElitista(SEED[i], t);
             System.out.println(solSHE[t][i].elite.coste + "\t" + solSHE[t][i].eval);
@@ -115,6 +120,6 @@ public class P4 {
         }
 
         //GUARDAR
-//        Parser.escribir("RESULTADOS.txt");
+        Parser.escribir("RESULTADOS.txt");
     }
 }
