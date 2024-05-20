@@ -2,6 +2,7 @@ package mh;
 
 import mh.tipos.*;
 import mh.algoritmos.*;
+import static javax.swing.WindowConstants.*;
 
 /**
  *
@@ -52,6 +53,13 @@ public class P4 {
             System.out.println(solOPT[t].coste + "\t" + solOPT[t].eval);
             System.out.println(solOPT[t] + "\n");
 
+            //mostrar grafo
+            Grafo g = new Grafo(solOPT[t].cerrados);
+            g.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            g.setBounds(200, 350, 800, 400);
+            g.setTitle(filename[t] + ".tsp - Optima");
+            g.setVisible(true);
+
             //SOLUCION GREEDY
             solG[t] = new Hormiga();
             solG[t].cerrados = Greedy.solG();
@@ -61,20 +69,44 @@ public class P4 {
             System.out.println(solG[t].coste + "\t" + solG[t].eval);
             System.out.println(solG[t] + "\n");
 
+            //mostrar grafo
+            Grafo g1 = new Grafo(solG[t].cerrados);
+            g1.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            g1.setBounds(200, 350, 800, 400);
+            g1.setTitle(filename[t] + ".tsp - Greedy");
+            g1.setVisible(true);
+
+            int i = 2;
             //SH
             System.out.println("SH - " + filename[t] + ".tsp - " + T[t] + " min");
-            for (int i = 0; i < SEED.length; i++) {
-                solSH[t][i] = new SistemaHormigas(SEED[i], t);
-                System.out.println(solSH[t][i].elite.coste + "\t" + solSH[t][i].eval);
+//            for (int i = 0; i < SEED.length; i++) {
+            solSH[t][i] = new SistemaHormigas(SEED[i], t);
+            System.out.println(solSH[t][i].elite.coste + "\t" + solSH[t][i].eval);
+            if (i == 2) {
+                //mostrar grafo
+                Grafo g2 = new Grafo(solSH[t][i].elite.cerrados);
+                g2.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                g2.setBounds(200, 350, 800, 400);
+                g2.setTitle(filename[t] + ".tsp - SH");
+                g2.setVisible(true);
+//                }
             }
             System.out.println("");
 
             //SHE
             System.out.println("SHE - " + filename[t] + ".tsp - " + T[t] + " min");
-            for (int i = 0; i < SEED.length; i++) {
-                solSHE[t][i] = new SistemaElitista(SEED[i], t);
-                System.out.println(solSHE[t][i].elite.coste + "\t" + solSHE[t][i].eval);
+//            for (int i = 0; i < SEED.length; i++) {
+            solSHE[t][i] = new SistemaElitista(SEED[i], t);
+            System.out.println(solSHE[t][i].elite.coste + "\t" + solSHE[t][i].eval);
+            if (i == 2) {
+                //mostrar grafo
+                Grafo g3 = new Grafo(solSHE[t][i].elite.cerrados);
+                g3.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                g3.setBounds(200, 350, 800, 400);
+                g3.setTitle(filename[t] + ".tsp - SHE");
+                g3.setVisible(true);
             }
+//            }
             System.out.println("");
 
             System.out.println("\n---------------------\n");

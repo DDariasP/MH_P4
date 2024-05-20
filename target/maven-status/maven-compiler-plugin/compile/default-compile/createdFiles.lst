@@ -1,5 +1,6 @@
 mh/tipos/Matriz.class
 mh/tipos/Hormiga.class
+mh/Grafo.class
 mh/algoritmos/Greedy.class
 mh/tipos/Nodo.class
 mh/algoritmos/SistemaHormigas.class
