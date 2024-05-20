@@ -12,34 +12,33 @@ public class Greedy {
 
     public static final int SEED = 333;
     public static Random rand = new Random(SEED);
+    public Hormiga m;
 
-    public static Lista<Nodo> solG() {
-        Matriz m = P4.distancias;
-        Lista<Nodo> abiertos = new Lista<>(P4.listaCiu);
-        Lista<Nodo> cerrados = new Lista<>();
-        int ini = rand.nextInt(P4.CIU);
-        Nodo inicial = abiertos.get(ini);
-        abiertos.remove(ini);
-        cerrados.add(inicial);
-        Lista<Nodo> candidatos;
+    public Greedy() {
+        int pos = rand.nextInt(P4.CIU);
+        Nodo inicial = P4.listaCiu.get(pos);
+        m = new Hormiga(SEED, inicial, P4.listaCiu);
 
-        int n = abiertos.size();
-        Nodo actual = inicial;
-        while (n > 0) {
-            candidatos = new Lista<>();
-            for (int i = 0; i < n; i++) {
-                Nodo tmp = abiertos.get(i);
-                Nodo candidato = new Nodo(tmp, m.s[actual.id][tmp.id]);
-                candidatos.add(candidato);
+        while (m.abiertos.size() > 0) {
+            Nodo actual = m.cerrados.tail();
+            int posibles = m.abiertos.size();
+            Nodo siguiente = m.abiertos.get(0);
+            int costeS = P4.distancias.s[actual.id][siguiente.id];
+
+            for (int i = 1; i < posibles; i++) {
+                Nodo candidato = m.abiertos.get(i);
+                int costeC = P4.distancias.s[actual.id][candidato.id];
+                if (costeS > costeC) {
+                    siguiente = candidato;
+                    costeS = costeC;
+                }
             }
-            Nodo.sort(candidatos);
-            Nodo siguiente = candidatos.get(0);
-            abiertos.remove(siguiente);
-            n = abiertos.size();
-            cerrados.add(siguiente);
+            m.abiertos.remove(siguiente);
+            m.cerrados.add(siguiente);
         }
 
-        return cerrados;
+        m.coste = P4.distancias.costeCamino(m.cerrados);
+        m.eval = 1;
     }
 
 }

@@ -17,8 +17,8 @@ public class P4 {
     public static final double RHO = 0.1;
     public static final double ELITISMO = 15.0;
     public static final int[] T = {1, 1};
-    public static final int[] MAXITER = {5000, 5000};
-//    public static final String[] filename = {"lin105", "kroA100"};
+    public static final int[] MAXITER = {100, 100};
+    public static final int[] RATIO = {4, 4};
     public static final String[] filename = {"ch130", "a280"};
     public static Hormiga[] solOPT, solG;
     public static SistemaHormigas[][] solSH;
@@ -57,29 +57,25 @@ public class P4 {
             System.out.println("Optima - " + filename[t] + ".opt.tour");
             System.out.println(solOPT[t].coste + "\t" + solOPT[t].eval);
             System.out.println(solOPT[t] + "\n");
-
-            //mostrar grafo
-            Grafo g = new Grafo(solOPT[t].cerrados);
-            g.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            g.setBounds(200, 350, 800, 400);
-            g.setTitle(filename[t] + ".tsp - Optima");
-            g.setVisible(true);
+            //CAMINO
+            Grafo gOPT = new Grafo(solOPT[t].cerrados);
+            gOPT.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            gOPT.setBounds(200, 350, 800, 400);
+            gOPT.setTitle(filename[t] + ".tsp - Optima");
+            gOPT.setVisible(true);
 
             //SOLUCION GREEDY
-            solG[t] = new Hormiga();
-            solG[t].cerrados = Greedy.solG();
-            solG[t].coste = distancias.costeCamino(solG[t].cerrados);
-            solG[t].eval = 1;
+            Greedy G = new Greedy();
+            solG[t] = G.m;
             System.out.println("Greedy - " + filename[t] + ".tsp");
             System.out.println(solG[t].coste + "\t" + solG[t].eval);
             System.out.println(solG[t] + "\n");
-
-            //mostrar grafo
-            Grafo g1 = new Grafo(solG[t].cerrados);
-            g1.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            g1.setBounds(200, 350, 800, 400);
-            g1.setTitle(filename[t] + ".tsp - Greedy");
-            g1.setVisible(true);
+            //CAMINO
+            Grafo gG = new Grafo(solG[t].cerrados);
+            gG.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            gG.setBounds(200, 350, 800, 400);
+            gG.setTitle(filename[t] + ".tsp - Greedy");
+            gG.setVisible(true);
 
             int i = 2;
             //SH
@@ -89,14 +85,20 @@ public class P4 {
             solSH[t][i] = new SistemaHormigas(SEED[i], t);
             System.out.println(solSH[t][i].elite.coste + "\t" + solSH[t][i].eval);
             if (i == 2) {
-                //mostrar grafo
-                Grafo g2 = new Grafo(solSH[t][i].elite.cerrados);
-                g2.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                g2.setBounds(200, 350, 800, 400);
-                g2.setTitle(filename[t] + ".tsp - SH");
-                g2.setVisible(true);
-//                }
+                //CAMINO
+                Grafo gSH = new Grafo(solSH[t][i].elite.cerrados);
+                gSH.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                gSH.setBounds(200, 350, 800, 400);
+                gSH.setTitle(filename[t] + ".tsp - SH");
+                gSH.setVisible(true);
+                //CONVERGENCIA
+                Grafica cSH = new Grafica(solSH[t][i].convergencia, t);
+                cSH.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                cSH.setBounds(200, 350, 800, 400);
+                cSH.setTitle(filename[t] + ".tsp - SH");
+                cSH.setVisible(true);
             }
+//            }
             System.out.println("");
 
             //SHE
@@ -106,12 +108,18 @@ public class P4 {
             solSHE[t][i] = new SistemaElitista(SEED[i], t);
             System.out.println(solSHE[t][i].elite.coste + "\t" + solSHE[t][i].eval);
             if (i == 2) {
-                //mostrar grafo
-                Grafo g3 = new Grafo(solSHE[t][i].elite.cerrados);
-                g3.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                g3.setBounds(200, 350, 800, 400);
-                g3.setTitle(filename[t] + ".tsp - SHE");
-                g3.setVisible(true);
+                //CAMINO
+                Grafo gSHE = new Grafo(solSHE[t][i].elite.cerrados);
+                gSHE.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                gSHE.setBounds(200, 350, 800, 400);
+                gSHE.setTitle(filename[t] + ".tsp - SHE");
+                gSHE.setVisible(true);
+                //CONVERGENCIA
+                Grafica cSHE = new Grafica(solSHE[t][i].convergencia, t);
+                cSHE.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                cSHE.setBounds(200, 350, 800, 400);
+                cSHE.setTitle(filename[t] + ".tsp - SHE");
+                cSHE.setVisible(true);
             }
 //            }
             System.out.println("");

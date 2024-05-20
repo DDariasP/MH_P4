@@ -17,6 +17,7 @@ public class SistemaElitista {
     public Hormiga[] m;
     public Hormiga elite;
     public int eval;
+    public Lista convergencia;
 
     public SistemaElitista(int s, int t) {
         SEED = s;
@@ -24,6 +25,7 @@ public class SistemaElitista {
         TAU0 = 1.0 / (P4.CIU * P4.solG[t].coste);
         TAU = new Tabla(P4.CIU, P4.CIU, TAU0);
         m = new Hormiga[P4.NUMH];
+        convergencia = new Lista<Integer>();
         SHE(t);
     }
 
@@ -33,8 +35,7 @@ public class SistemaElitista {
 
 //        int limite = P4.T[t] * 60;
 //        long endTime = System.currentTimeMillis() + limite * 1000;
-//        double iter = 1.0;
-        int iter = 1;
+        int iter = 0;
         while (true) {
             //NODO INICIAL
             for (int i = 0; i < P4.NUMH; i++) {
@@ -64,15 +65,16 @@ public class SistemaElitista {
                 elite = actual;
             }
 
-            if (iter % 100 == 0) {
-                System.out.println(actual.coste + "\titer=" + iter);
-                System.out.println(actual);
-
+            //CONVERGENCIA
+            if (iter % P4.RATIO[t] == 0) {
+                convergencia.add(actual.coste);
+                System.out.println("iter=" + iter);
             }
 
-            //TIEMPO LIMITE
+            //ITERACIONES
             iter++;
-            if (iter >= P4.MAXITER[t]) {
+            if (iter > P4.MAXITER[t]) {
+                //TIEMPO LIMITE
 //            if (System.currentTimeMillis() > endTime) {
                 break;
             }
