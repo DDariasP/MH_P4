@@ -52,7 +52,7 @@ public class Parser {
                 line = scanner.nextLine();
             }
             line = scanner.nextLine();
-            while (scanner.hasNext()) {
+            while (!line.equals("-1")) {
                 int id = Integer.parseInt(line) - 1;
                 solucion.add(P4.listaCiu.get(id));
                 line = scanner.nextLine();

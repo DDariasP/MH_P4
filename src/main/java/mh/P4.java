@@ -17,7 +17,9 @@ public class P4 {
     public static final double RHO = 0.1;
     public static final double ELITISMO = 15.0;
     public static final int[] T = {1, 1};
-    public static final String[] filename = {"ch130", "a280"};
+    public static final int[] MAXITER = {5, 5};
+    public static final String[] filename = {"lin105", "kroA100"};
+//    public static final String[] filename = {"ch130", "a280"};
     public static Hormiga[] solOPT, solG;
     public static SistemaHormigas[][] solSH;
     public static SistemaElitista[][] solSHE;
@@ -113,6 +115,6 @@ public class P4 {
         }
 
         //GUARDAR
-        Parser.escribir("RESULTADOS.txt");
+//        Parser.escribir("RESULTADOS.txt");
     }
 }

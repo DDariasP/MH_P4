@@ -36,10 +36,10 @@ public class SistemaHormigas {
         elite = Hormiga.NULA;
         eval = 0;
 
-        int limite = P4.T[t] * 60;
-        long endTime = System.currentTimeMillis() + limite * 1000;
-
-        double iter = 1.0;
+//        int limite = P4.T[t] * 60;
+//        long endTime = System.currentTimeMillis() + limite * 1000;
+//        double iter = 1.0;
+        int iter = 1;
         while (true) {
             //NODO INICIAL
             for (int i = 0; i < P4.NUMH; i++) {
@@ -71,7 +71,8 @@ public class SistemaHormigas {
 
             //TIEMPO LIMITE
             iter++;
-            if (System.currentTimeMillis() > endTime) {
+            if (iter >= P4.MAXITER[t]) {
+//            if (System.currentTimeMillis() > endTime) {
                 break;
             }
         }
