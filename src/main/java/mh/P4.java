@@ -23,10 +23,12 @@ public class P4 {
     public static Hormiga[] solOPT, solG;
     public static SistemaHormigas[][] solSH;
     public static SistemaElitista[][] solSHE;
+    public static Lista<Integer>[] convSH;
+    public static Lista<Integer>[] convSHE;
     public static Lista<Nodo> listaCiu;
     public static int CIU;
-    public static Matriz distancias;
-    public static Tabla ETA;
+    public static MInteger distancias;
+    public static MDouble ETA;
 
     /**
      * @param args the command line arguments
@@ -41,12 +43,16 @@ public class P4 {
 
         //PROBLEMAS
         for (int t = 0; t < T.length; t++) {
+            //CONVERGENCIA
+            convSH = new Lista[SEED.length];
+            convSHE = new Lista[SEED.length];
+
             //MATRIZ DISTANCIAS
             listaCiu = Parser.leerCiu(filename[t] + ".tsp");
             CIU = listaCiu.size();
-            distancias = new Matriz(CIU, CIU);
+            distancias = new MInteger(CIU, CIU);
             distancias.construir(listaCiu);
-            ETA = new Tabla(CIU, CIU);
+            ETA = new MDouble(CIU, CIU);
             ETA.construir(distancias);
 
             //SOLUCION OPTIMA
@@ -66,7 +72,7 @@ public class P4 {
 
             //SOLUCION GREEDY
             Greedy G = new Greedy();
-            solG[t] = G.m;
+            solG[t] = G.ant;
             System.out.println("Greedy - " + filename[t] + ".tsp");
             System.out.println(solG[t].coste + "\t" + solG[t].eval);
             System.out.println(solG[t] + "\n");
@@ -77,51 +83,52 @@ public class P4 {
             gG.setTitle(filename[t] + ".tsp - Greedy");
             gG.setVisible(true);
 
-            int i = 2;
             //SH
             System.out.println("SH - " + filename[t] + ".tsp - " + MAXITER[t] + " iter");
 //            System.out.println("SH - " + filename[t] + ".tsp - " + T[t] + " min");
-//            for (int i = 0; i < SEED.length; i++) {
-            solSH[t][i] = new SistemaHormigas(SEED[i], t);
-            System.out.println(solSH[t][i].elite.coste + "\t" + solSH[t][i].eval);
-            if (i == 2) {
-                //CAMINO
-                Grafo gSH = new Grafo(solSH[t][i].elite.cerrados);
-                gSH.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                gSH.setBounds(200, 350, 800, 400);
-                gSH.setTitle(filename[t] + ".tsp - SH");
-                gSH.setVisible(true);
-                //CONVERGENCIA
-                Grafica cSH = new Grafica(solSH[t][i].convergencia, t);
-                cSH.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                cSH.setBounds(200, 350, 800, 400);
-                cSH.setTitle(filename[t] + ".tsp - SH");
-                cSH.setVisible(true);
+            for (int i = 0; i < SEED.length; i++) {
+                solSH[t][i] = new SistemaHormigas(SEED[i], t);
+                System.out.println(solSH[t][i].elite.coste + "\t" + solSH[t][i].eval);
+                convSH[i] = solSH[t][i].convergencia;
+                if (i == 2) {
+                    //CAMINO
+                    Grafo gSH = new Grafo(solSH[t][i].elite.cerrados);
+                    gSH.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    gSH.setBounds(200, 350, 800, 400);
+                    gSH.setTitle(filename[t] + ".tsp - SH");
+                    gSH.setVisible(true);
+                }
             }
-//            }
+            //CONVERGENCIA
+            Grafica cSH = new Grafica(convSH, t);
+            cSH.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            cSH.setBounds(200, 350, 800, 400);
+            cSH.setTitle(filename[t] + ".tsp - SH");
+            cSH.setVisible(true);
             System.out.println("");
 
             //SHE
             System.out.println("SHE - " + filename[t] + ".tsp - " + MAXITER[t] + " iter");
 //            System.out.println("SHE - " + filename[t] + ".tsp - " + T[t] + " min");
-//            for (int i = 0; i < SEED.length; i++) {
-            solSHE[t][i] = new SistemaElitista(SEED[i], t);
-            System.out.println(solSHE[t][i].elite.coste + "\t" + solSHE[t][i].eval);
-            if (i == 2) {
-                //CAMINO
-                Grafo gSHE = new Grafo(solSHE[t][i].elite.cerrados);
-                gSHE.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                gSHE.setBounds(200, 350, 800, 400);
-                gSHE.setTitle(filename[t] + ".tsp - SHE");
-                gSHE.setVisible(true);
-                //CONVERGENCIA
-                Grafica cSHE = new Grafica(solSHE[t][i].convergencia, t);
-                cSHE.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                cSHE.setBounds(200, 350, 800, 400);
-                cSHE.setTitle(filename[t] + ".tsp - SHE");
-                cSHE.setVisible(true);
+            for (int i = 0; i < SEED.length; i++) {
+                solSHE[t][i] = new SistemaElitista(SEED[i], t);
+                System.out.println(solSHE[t][i].elite.coste + "\t" + solSHE[t][i].eval);
+                convSHE[i] = solSHE[t][i].convergencia;
+                if (i == 2) {
+                    //CAMINO
+                    Grafo gSHE = new Grafo(solSHE[t][i].elite.cerrados);
+                    gSHE.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    gSHE.setBounds(200, 350, 800, 400);
+                    gSHE.setTitle(filename[t] + ".tsp - SHE");
+                    gSHE.setVisible(true);
+                }
             }
-//            }
+            //CONVERGENCIA
+            Grafica cSHE = new Grafica(convSHE, t);
+            cSHE.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            cSHE.setBounds(200, 350, 800, 400);
+            cSHE.setTitle(filename[t] + ".tsp - SHE");
+            cSHE.setVisible(true);
             System.out.println("");
 
             System.out.println("\n---------------------\n");

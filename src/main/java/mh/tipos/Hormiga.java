@@ -33,7 +33,7 @@ public class Hormiga {
         eval = 0;
     }
 
-    public void transicion(Tabla TAU, Random rand) {
+    public void transicion(MDouble TAU, Random rand) {
         Nodo actual = cerrados.tail();
         int posibles = abiertos.size();
         double[] num = new double[posibles];
@@ -41,8 +41,8 @@ public class Hormiga {
 
         for (int i = 0; i < posibles; i++) {
             int pos = abiertos.get(i).id;
-            double a = Math.pow(TAU.s[actual.id][pos], P4.ALPHA);
-            double b = Math.pow(P4.ETA.s[actual.id][pos], P4.BETA);
+            double a = Math.pow(TAU.m[actual.id][pos], P4.ALPHA);
+            double b = Math.pow(P4.ETA.m[actual.id][pos], P4.BETA);
             num[i] = a * b;
             sum = sum + num[i];
         }
@@ -70,11 +70,11 @@ public class Hormiga {
         cerrados.add(siguiente);
     }
 
-    public static Tabla actualizacion(Hormiga[] m, Tabla TAU, double iter) {
+    public static MDouble actualizacion(Hormiga[] m, MDouble TAU, double iter) {
         for (int x = 0; x < P4.CIU; x++) {
             for (int y = 0; y < P4.CIU; y++) {
                 if (x != y) {
-                    double evapora = (1.0 - P4.RHO) * TAU.s[x][y];
+                    double evapora = (1.0 - P4.RHO) * TAU.m[x][y];
 
                     double aporte = 0.0;
                     for (int i = 0; i < P4.NUMH; i++) {
@@ -83,18 +83,18 @@ public class Hormiga {
                         }
                     }
 
-                    TAU.s[x][y] = evapora + aporte;
+                    TAU.m[x][y] = evapora + aporte;
                 }
             }
         }
         return TAU;
     }
 
-    public static Tabla actualizacion(Hormiga[] m, Tabla TAU, double iter, Hormiga elite) {
+    public static MDouble actualizacion(Hormiga[] m, MDouble TAU, double iter, Hormiga elite) {
         for (int x = 0; x < P4.CIU; x++) {
             for (int y = 0; y < P4.CIU; y++) {
                 if (x != y) {
-                    double evapora = (1.0 - P4.RHO) * TAU.s[x][y];
+                    double evapora = (1.0 - P4.RHO) * TAU.m[x][y];
 
                     double aporte = 0.0;
                     for (int i = 0; i < P4.NUMH; i++) {
@@ -108,7 +108,7 @@ public class Hormiga {
                         refuerzo = P4.ELITISMO * (1.0 / elite.coste);
                     }
 
-                    TAU.s[x][y] = evapora + aporte + refuerzo;
+                    TAU.m[x][y] = evapora + aporte + refuerzo;
                 }
             }
         }

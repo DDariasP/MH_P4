@@ -1,12 +1,12 @@
-mh/tipos/Matriz.class
 mh/tipos/Hormiga.class
 mh/Grafo.class
 mh/algoritmos/Greedy.class
 mh/Grafica.class
-mh/tipos/Tabla.class
+mh/tipos/MDouble.class
 mh/tipos/Nodo.class
 mh/algoritmos/SistemaHormigas.class
 mh/algoritmos/SistemaElitista.class
 mh/tipos/Lista.class
+mh/tipos/MInteger.class
 mh/Parser.class
 mh/P4.class

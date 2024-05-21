@@ -16,26 +16,36 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 public class Grafica extends JFrame {
 
-    public double minY, maxY;
+    public final Lista<Integer>[] d;
+    public int minX, maxX, minY, maxY;
 
-    public Grafica(Lista<Integer> datos, int t) {
+    public Grafica(Lista<Integer>[] datos, int t) {
+        d = datos;
+        minX = Integer.MAX_VALUE;
+        maxX = Integer.MIN_VALUE;
+        minY = Integer.MAX_VALUE;
+        maxY = Integer.MIN_VALUE;
+
         //crear la grafica
         XYPlot plot = new XYPlot();
 
-        //crear funcion
-        XYDataset funcion = createDataset(datos, P4.filename[t] + ".tsp");
-        //caracteristicas de funcion
-        XYItemRenderer renderer = new XYLineAndShapeRenderer(true, true);
-        renderer.setSeriesPaint(0, Color.GREEN);
-        renderer.setSeriesStroke(0, new BasicStroke(2.0f));
-        //añadir funcion a la grafica
-        plot.setDataset(0, funcion);
-        plot.setRenderer(0, renderer);
+        for (int i = 0; i < datos.length; i++) {
+            //crear funcion
+            XYDataset funcion = createDataset(i, P4.filename[t] + "-S" + P4.SEED[i]);
+            //caracteristicas de funcion
+            XYItemRenderer renderer = new XYLineAndShapeRenderer(true, true);
+            renderer.setSeriesStroke(0, new BasicStroke(2.0f));
+            //añadir funcion a la grafica
+            plot.setDataset(i, funcion);
+            plot.setRenderer(i, renderer);
+        }
 
         //crear y añadir los ejes
         ValueAxis domain = new NumberAxis("Iteración (1 : " + P4.RATIO[t] + ")");
+        domain.setRange(minX - 1, maxX + 1);
         ValueAxis range = new NumberAxis("Coste");
-        range.setRange(minY, maxY);
+        int diffY = Math.abs((maxY - minY) / 10);
+        range.setRange(minY - diffY, maxY + diffY);
         plot.setDomainAxis(0, domain);
         plot.setRangeAxis(0, range);
 
@@ -50,14 +60,28 @@ public class Grafica extends JFrame {
         setContentPane(panel);
     }
 
-    private XYDataset createDataset(Lista<Integer> datos, String nombre) {
+    private XYDataset createDataset(int n, String nombre) {
         XYSeriesCollection dataset = new XYSeriesCollection();
         XYSeries series = new XYSeries(nombre);
-        for (int i = 0; i < datos.size(); i++) {
-            series.add(i, datos.get(i));
+        for (int i = 0; i < d[n].size(); i++) {
+            series.add(i, d[n].get(i));
         }
-        minY = series.getMinY() - 1000.0;
-        maxY = series.getMaxY() + 1000.0;
+        int min = (int) series.getMinY();
+        if (minY > min) {
+            minY = min;
+        }
+        int max = (int) series.getMaxY();
+        if (maxY < max) {
+            maxY = max;
+        }
+        min = (int) series.getMinX();
+        if (minX > min) {
+            minX = min;
+        }
+        max = (int) series.getMaxX();
+        if (maxX < max) {
+            maxX = max;
+        }
         dataset.addSeries(series);
         return dataset;
     }

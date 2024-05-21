@@ -4,28 +4,28 @@ package mh.tipos;
  *
  * @author diego
  */
-public class Matriz {
+public class MInteger {
 
     public final int filas, columnas;
-    public int[][] s;
+    public int[][] m;
 
-    public Matriz(int a, int b) {
+    public MInteger(int a, int b) {
         filas = a;
         columnas = b;
-        s = new int[a][b];
+        m = new int[a][b];
     }
 
     public void construir(Lista<Nodo> listaCiu) {
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 if (i == j) {
-                    s[i][j] = Integer.MAX_VALUE;
+                    m[i][j] = Integer.MAX_VALUE;
                 } else {
                     Nodo ni = listaCiu.get(i);
                     Nodo nj = listaCiu.get(j);
                     double distX = Math.pow(ni.x - nj.x, 2);
                     double distY = Math.pow(ni.y - nj.y, 2);
-                    s[i][j] = (int) Math.round(Math.sqrt(distX + distY));
+                    m[i][j] = (int) Math.round(Math.sqrt(distX + distY));
                 }
             }
         }
@@ -39,10 +39,10 @@ public class Matriz {
         for (int i = 0; i < tam - 1; i++) {
             Nodo actual = solucion.get(i);
             siguiente = solucion.get(i + 1);
-            coste = coste + s[actual.id][siguiente.id];
+            coste = coste + m[actual.id][siguiente.id];
         }
         inicial = solucion.get(0);
-        coste = coste + s[siguiente.id][inicial.id];
+        coste = coste + m[siguiente.id][inicial.id];
         return coste;
     }
 
@@ -51,7 +51,7 @@ public class Matriz {
         String output = "";
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                output = output + s[i][j] + " ";
+                output = output + m[i][j] + " ";
             }
             output = output + "\n";
         }

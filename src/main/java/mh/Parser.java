@@ -85,19 +85,17 @@ public class Parser {
                 writer.write("\nGREEDY");
                 writer.write("\n" + P4.solG[t].coste + "\t" + P4.solG[t].eval);
 
-                int i = 2;
-
                 writer.write("\nSH - " + P4.MAXITER[t] + " iter");
 //                writer.write("\nSH - " + P4.T[t] + " min");
-//                for (int i = 0; i < P4.SEED.length; i++) {
-                writer.write("\n" + P4.solSHE[t][i].elite.coste + "\t" + P4.solSH[t][i].eval);
-//                }
+                for (int i = 0; i < P4.SEED.length; i++) {
+                    writer.write("\n" + P4.solSHE[t][i].elite.coste + "\t" + P4.solSH[t][i].eval);
+                }
 
                 writer.write("\nSHE - " + P4.MAXITER[t] + " iter");
 //                writer.write("\nSHE - " + P4.T[t] + " min");
-//                for (int i = 0; i < P4.SEED.length; i++) {
-                writer.write("\n" + P4.solSHE[t][i].elite.coste + "\t" + P4.solSHE[t][i].eval);
-//                }
+                for (int i = 0; i < P4.SEED.length; i++) {
+                    writer.write("\n" + P4.solSHE[t][i].elite.coste + "\t" + P4.solSHE[t][i].eval);
+                }
 
                 writer.write("\n---------------------\n");
             }

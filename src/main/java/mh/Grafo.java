@@ -24,6 +24,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 public class Grafo extends JFrame {
 
     public final Lista<Nodo> cm;
+    public int minX, maxX, minY, maxY;
 
     public Grafo(Lista<Nodo> camino) {
         cm = camino;
@@ -56,7 +57,11 @@ public class Grafo extends JFrame {
 
         //crear y añadir los ejes
         ValueAxis domain = new NumberAxis("");
+        int diffX = Math.abs((maxX - minX) / 10);
+        domain.setRange(minX - diffX, maxX + diffX);
         ValueAxis range = new NumberAxis("");
+        int diffY = Math.abs((maxY - minY) / 10);
+        range.setRange(minY - diffY, maxY + diffY);
         plot.setDomainAxis(0, domain);
         plot.setRangeAxis(0, range);
 
@@ -79,6 +84,10 @@ public class Grafo extends JFrame {
         for (int i = 0; i < cm.size(); i++) {
             series.add(cm.get(i).x, cm.get(i).y);
         }
+        minY = (int) series.getMinY();
+        maxY = (int) series.getMaxY();
+        minX = (int) series.getMinX();
+        maxX = (int) series.getMaxX();
         dataset.addSeries(series);
         return dataset;
     }
