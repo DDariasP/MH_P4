@@ -87,7 +87,7 @@ public class Parser {
 
                 writer.write("\nSH - " + P4.MAXITER[t] + " iter");
                 for (int i = 0; i < P4.SEED.length; i++) {
-                    writer.write("\n" + P4.solSHE[t][i].elite.coste + "\t" + P4.solSH[t][i].elite.eval);
+                    writer.write("\n" + P4.solSH[t][i].elite.coste + "\t" + P4.solSH[t][i].elite.eval);
                 }
 
                 writer.write("\nSHE - " + P4.MAXITER[t] + " iter");
