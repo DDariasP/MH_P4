@@ -28,15 +28,13 @@ public class SistemaHormigas {
         ant = new Hormiga[P4.NUMH];
         elite = Hormiga.NULA;
         eval = 0;
-        iter = 1;
+        iter = 0;
         convergencia = new Lista<Integer>();
         SH(t);
     }
 
     public final void SH(int t) {
-//        int limite = P4.T[t] * 60;
-//        long endTime = System.currentTimeMillis() + limite * 1000;
-//
+
         while (true) {
             //NODO INICIAL
             for (int i = 0; i < P4.NUMH; i++) {
@@ -68,15 +66,13 @@ public class SistemaHormigas {
 
             //CONVERGENCIA
             if (iter % P4.RATIO[t] == 0) {
-                convergencia.add(actual.coste);
+                convergencia.add(elite.coste);
                 System.out.println("iter=" + iter);
             }
 
             //ITERACIONES
             iter++;
             if (iter > P4.MAXITER[t]) {
-                //TIEMPO LIMITE
-//            if (System.currentTimeMillis() > endTime) {
                 break;
             }
         }

@@ -76,8 +76,8 @@ public class Parser {
             resultados.createNewFile();
             FileWriter writer = new FileWriter(filename);
 
-            for (int t = 0; t < P4.T.length; t++) {
-                writer.write(P4.filename[t] + ".tsp");
+            for (int t = 0; t < P4.P.length; t++) {
+                writer.write(P4.P[t] + ".tsp");
 
                 writer.write("\nOPTIMA");
                 writer.write("\n" + P4.solOPT[t].coste + "\t" + P4.solOPT[t].eval);
@@ -86,15 +86,13 @@ public class Parser {
                 writer.write("\n" + P4.solG[t].coste + "\t" + P4.solG[t].eval);
 
                 writer.write("\nSH - " + P4.MAXITER[t] + " iter");
-//                writer.write("\nSH - " + P4.T[t] + " min");
                 for (int i = 0; i < P4.SEED.length; i++) {
-                    writer.write("\n" + P4.solSHE[t][i].elite.coste + "\t" + P4.solSH[t][i].eval);
+                    writer.write("\n" + P4.solSHE[t][i].elite.coste + "\t" + P4.solSH[t][i].elite.eval);
                 }
 
                 writer.write("\nSHE - " + P4.MAXITER[t] + " iter");
-//                writer.write("\nSHE - " + P4.T[t] + " min");
                 for (int i = 0; i < P4.SEED.length; i++) {
-                    writer.write("\n" + P4.solSHE[t][i].elite.coste + "\t" + P4.solSHE[t][i].eval);
+                    writer.write("\n" + P4.solSHE[t][i].elite.coste + "\t" + P4.solSHE[t][i].elite.eval);
                 }
 
                 writer.write("\n---------------------\n");

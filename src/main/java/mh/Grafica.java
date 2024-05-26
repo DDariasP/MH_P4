@@ -31,7 +31,7 @@ public class Grafica extends JFrame {
 
         for (int i = 0; i < datos.length; i++) {
             //crear funcion
-            XYDataset funcion = createDataset(i, P4.filename[t] + "-S" + P4.SEED[i]);
+            XYDataset funcion = createDataset(i, P4.P[t] + "-S" + P4.SEED[i]);
             //caracteristicas de funcion
             XYItemRenderer renderer = new XYLineAndShapeRenderer(true, true);
             renderer.setSeriesStroke(0, new BasicStroke(2.0f));

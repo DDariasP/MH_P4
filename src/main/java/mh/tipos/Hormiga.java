@@ -78,11 +78,11 @@ public class Hormiga {
 
                     double aporte = 0.0;
                     for (int i = 0; i < P4.NUMH; i++) {
-                        if (Nodo.arco(m[i].cerrados, x, y)) {
+                        if (Nodo.arco(m[i].cerrados, x, y) || Nodo.arco(m[i].cerrados, y, x)) {
                             aporte = aporte + (1.0 / m[i].coste);
                         }
                     }
-
+                    
                     TAU.m[x][y] = evapora + aporte;
                 }
             }
@@ -98,13 +98,13 @@ public class Hormiga {
 
                     double aporte = 0.0;
                     for (int i = 0; i < P4.NUMH; i++) {
-                        if (Nodo.arco(m[i].cerrados, x, y)) {
+                        if (Nodo.arco(m[i].cerrados, x, y) || Nodo.arco(m[i].cerrados, y, x)) {
                             aporte = aporte + (1.0 / m[i].coste);
                         }
                     }
 
                     double refuerzo = 0.0;
-                    if (Nodo.arco(elite.cerrados, x, y)) {
+                    if (Nodo.arco(elite.cerrados, x, y) || Nodo.arco(elite.cerrados, y, x)) {
                         refuerzo = P4.ELITISMO * (1.0 / elite.coste);
                     }
 
