@@ -45,7 +45,7 @@ public class Grafica extends JFrame {
         domain.setRange(minX - 1, maxX + 1);
         ValueAxis range = new NumberAxis("Coste");
         int diffY = Math.abs((maxY - minY) / 10);
-        range.setRange(minY - diffY, maxY + diffY);
+        range.setRange(minY - diffY, maxY - diffY);
         plot.setDomainAxis(0, domain);
         plot.setRangeAxis(0, range);
 

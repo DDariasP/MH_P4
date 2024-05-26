@@ -16,8 +16,8 @@ public class P4 {
     public static final double BETA = 2.0;
     public static final double RHO = 0.1;
     public static final double ELITISMO = 15.0;
-    public static final int[] MAXITER = {3, 3};
-    public static final int[] RATIO = {1, 1};
+    public static final int[] MAXITER = {100, 100};
+    public static final int[] RATIO = {4, 4};
     public static final String[] P = {"ch130", "a280"};
     public static Hormiga[] solOPT, solG;
     public static SistemaHormigas[][] solSH;
