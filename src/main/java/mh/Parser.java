@@ -80,10 +80,12 @@ public class Parser {
                 writer.write(P4.P[t] + ".tsp");
 
                 writer.write("\nOPTIMA");
-                writer.write("\n" + P4.solOPT[t].coste + "\t" + P4.solOPT[t].eval);
+                writer.write("\n" + P4.solOPT[t].coste);
 
                 writer.write("\nGREEDY");
-                writer.write("\n" + P4.solG[t].coste + "\t" + P4.solG[t].eval);
+                writer.write("\n" + P4.solG[t].peor + "\tpeor");
+                writer.write("\n" + P4.solG[t].medio + "\tmedio");
+                writer.write("\n" + P4.solG[t].mejor.coste + "\tmejor");
 
                 writer.write("\nSH - " + P4.MAXITER[t] + " iter");
                 for (int i = 0; i < P4.SEED.length; i++) {

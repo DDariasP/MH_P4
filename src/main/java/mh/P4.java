@@ -16,10 +16,11 @@ public class P4 {
     public static final double BETA = 2.0;
     public static final double RHO = 0.1;
     public static final double ELITISMO = 15.0;
-    public static final int[] MAXITER = {100, 100};
-    public static final int[] RATIO = {4, 4};
+    public static final int[] MAXITER = {10, 10};
+    public static final int[] RATIO = {1, 1};
     public static final String[] P = {"ch130", "a280"};
-    public static Hormiga[] solOPT, solG;
+    public static Hormiga[] solOPT;
+    public static Greedy[] solG;
     public static SistemaHormigas[][] solSH;
     public static SistemaElitista[][] solSHE;
     public static Lista<Integer>[] convSH;
@@ -36,7 +37,7 @@ public class P4 {
 
         //RESULTADOS
         solOPT = new Hormiga[P.length];
-        solG = new Hormiga[P.length];
+        solG = new Greedy[P.length];
         solSH = new SistemaHormigas[P.length][SEED.length];
         solSHE = new SistemaElitista[P.length][SEED.length];
 
@@ -58,9 +59,8 @@ public class P4 {
             solOPT[t] = new Hormiga();
             solOPT[t].cerrados = Parser.leerTour(P[t] + ".opt.tour");
             solOPT[t].coste = distancias.costeCamino(solOPT[t].cerrados);
-            solOPT[t].eval = 1;
             System.out.println("Optima - " + P[t] + ".opt.tour");
-            System.out.println(solOPT[t].coste + "\t" + solOPT[t].eval);
+            System.out.println(solOPT[t].coste);
             System.out.println(solOPT[t] + "\n");
             //CAMINO
             Grafo gOPT = new Grafo(solOPT[t].cerrados);
@@ -70,13 +70,13 @@ public class P4 {
             gOPT.setVisible(true);
 
             //SOLUCION GREEDY
-            Greedy G = new Greedy();
-            solG[t] = G.ant;
+            solG[t] = new Greedy();
             System.out.println("Greedy - " + P[t] + ".tsp");
-            System.out.println(solG[t].coste + "\t" + solG[t].eval);
-            System.out.println(solG[t] + "\n");
+            System.out.println(solG[t].peor + "\tpeor");
+            System.out.println(solG[t].medio + "\tmedio");
+            System.out.println(solG[t].mejor.coste + "\tmejor\n");
             //CAMINO
-            Grafo gG = new Grafo(solG[t].cerrados);
+            Grafo gG = new Grafo(solG[t].mejor.cerrados);
             gG.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             gG.setBounds(200, 350, 800, 400);
             gG.setTitle(P[t] + ".tsp - Greedy");

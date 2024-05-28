@@ -1,8 +1,10 @@
 ch130.tsp
 OPTIMA
-6110	1
+6110	
 GREEDY
-8325	1
+8837	peor
+7735	medio
+7129	mejor
 SH - 100 iter
 7041	1589
 6797	1444
@@ -18,9 +20,11 @@ SHE - 100 iter
 ---------------------
 a280.tsp
 OPTIMA
-2579	1
+2579	
 GREEDY
-2982	1
+3417	peor
+3171	medio
+2975	mejor
 SH - 100 iter
 3456	2510
 3531	1511

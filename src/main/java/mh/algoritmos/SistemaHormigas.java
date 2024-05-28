@@ -23,7 +23,7 @@ public class SistemaHormigas {
     public SistemaHormigas(int s, int t) {
         SEED = s;
         rand = new Random(SEED);
-        TAU0 = 1.0 / (P4.CIU * P4.solG[t].coste);
+        TAU0 = 1.0 / (P4.CIU * P4.solG[t].mejor.coste);
         TAU = new MDouble(P4.CIU, P4.CIU, TAU0);
         ant = new Hormiga[P4.NUMH];
         elite = Hormiga.NULA;
